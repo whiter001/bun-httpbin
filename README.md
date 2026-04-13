@@ -15,6 +15,27 @@
 - GET /headers
 - GET /ip
 - GET /user-agent
+- GET /status/:code
+- GET /redirect/:n
+- GET /relative-redirect/:n
+- GET /absolute-redirect/:n
+- GET /cookies
+- GET /cookies/set
+- GET /cookies/delete
+- GET /basic-auth/:user/:passwd
+- GET /bearer
+- GET /uuid
+- GET /base64/:value
+- GET /bytes/:n
+- GET /delay/:n
+- GET /stream/:n
+- GET /json
+- GET /xml
+- GET /robots.txt
+- GET /deny
+- GET /gzip
+- GET /deflate
+- GET /brotli
 
 ## 运行
 
