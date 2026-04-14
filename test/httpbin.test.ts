@@ -62,6 +62,16 @@ describe('remaining httpbin endpoints', () => {
     expect(await response.text()).toBe('')
   })
 
+  test('GET /cache returns a cached payload when no validators are sent', async () => {
+    const response = await fetch(`${server.baseUrl()}/cache`)
+    const body = (await response.json()) as Record<string, unknown>
+
+    expect(response.status).toBe(200)
+    expect(response.headers.get('etag')).toBe('cache')
+    expect(response.headers.get('last-modified')).toContain('GMT')
+    expect(body.url).toBe(`${server.baseUrl()}/cache`)
+  })
+
   test('GET /redirect/5?absolute=true redirects absolutely', async () => {
     const response = await fetch(
       `${server.baseUrl()}/redirect/5?absolute=true`,
@@ -85,6 +95,17 @@ describe('remaining httpbin endpoints', () => {
 
     expect(response.status).toBe(304)
     expect(response.headers.get('etag')).toBe('demo')
+  })
+
+  test('GET /etag/demo rejects non-matching If-Match headers', async () => {
+    const response = await fetch(`${server.baseUrl()}/etag/demo`, {
+      headers: {
+        'if-match': 'W/"other"'
+      }
+    })
+
+    expect(response.status).toBe(412)
+    expect(await response.text()).toBe('')
   })
 
   test('GET /cookies/set/name/value sets a cookie and redirects', async () => {
@@ -202,6 +223,17 @@ describe('remaining httpbin endpoints', () => {
     expect(secondBytes).toEqual(firstBytes)
   })
 
+  test('GET /range/26 rejects unsatisfiable ranges', async () => {
+    const response = await fetch(`${server.baseUrl()}/range/26`, {
+      headers: {
+        Range: 'bytes=999-1000'
+      }
+    })
+
+    expect(response.status).toBe(416)
+    expect(response.headers.get('content-range')).toBe('bytes */26')
+  })
+
   test('GET /hidden-basic-auth hides unauthorized requests', async () => {
     const denied = await fetch(
       `${server.baseUrl()}/hidden-basic-auth/alice/secret`
@@ -239,6 +271,24 @@ describe('remaining httpbin endpoints', () => {
 
     expect(utf8Response.status).toBe(200)
     expect(utf8Body).toContain('你好')
+  })
+
+  test('GET /image rejects unsupported accept headers', async () => {
+    const response = await fetch(`${server.baseUrl()}/image`, {
+      headers: {
+        accept: 'application/json'
+      }
+    })
+    const body = (await response.json()) as {
+      accept: string[]
+      message: string
+    }
+
+    expect(response.status).toBe(406)
+    expect(body.message).toContain('supported media type')
+    expect(body.accept).toEqual(
+      expect.arrayContaining(['image/png', 'image/jpeg', 'image/svg+xml'])
+    )
   })
 
   test('GET /redirect/2 returns a redirect chain', async () => {
@@ -391,6 +441,17 @@ describe('remaining httpbin endpoints', () => {
     expect(response.status).toBe(200)
     expect(elapsed).toBeGreaterThanOrEqual(900)
     expect(body.url).toContain('/delay/1')
+  })
+
+  test('GET /status/foo returns 400 for invalid status codes', async () => {
+    const response = await fetch(`${server.baseUrl()}/status/foo`)
+    const body = (await response.json()) as Record<string, unknown>
+
+    expect(response.status).toBe(400)
+    expect(body).toEqual({
+      error: 'Invalid status code',
+      status: 400
+    })
   })
 
   test('GET /stream/3 returns NDJSON lines', async () => {
