@@ -1,27 +1,26 @@
-import { afterAll, beforeAll } from "bun:test";
+import { afterAll, beforeAll } from 'bun:test'
 
-import { createFetchHandler } from "../../src/app";
+import { createServerOptions } from '../../src/app'
 
-const testServerOptions = {
-  fetch: createFetchHandler(),
-  hostname: "127.0.0.1",
-  port: 0,
-} as Bun.Serve.Options<undefined>;
+const testServerOptions = createServerOptions({
+  hostname: '127.0.0.1',
+  port: 0
+})
 
 export function useTestServer() {
-  let server: Bun.Server<undefined>;
-  let baseUrl = "";
+  let server: Bun.Server<undefined>
+  let baseUrl = ''
 
   beforeAll(() => {
-    server = Bun.serve(testServerOptions);
-    baseUrl = `http://${server.hostname}:${server.port}`;
-  });
+    server = Bun.serve(testServerOptions)
+    baseUrl = `http://${server.hostname}:${server.port}`
+  })
 
   afterAll(() => {
-    server.stop(true);
-  });
+    server.stop(true)
+  })
 
   return {
-    baseUrl: () => baseUrl,
-  };
+    baseUrl: () => baseUrl
+  }
 }

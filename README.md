@@ -46,6 +46,8 @@ bun run start
 
 默认监听 <http://127.0.0.1:3000>。
 
+打开根路径 `/` 会看到基于 Vue3 + Element Plus 的前端页面，可直接选择预置请求并查看响应。
+
 ## 测试
 
 ```bash
@@ -80,6 +82,12 @@ curl -X POST 'http://127.0.0.1:3000/post?debug=1' \
 
 curl 'http://127.0.0.1:3000/headers' -H 'x-demo: 1'
 ```
+
+## 前端页面
+
+前端页面使用 Bun 的 HTML import 方式挂载，入口在 [src/frontend/index.html](src/frontend/index.html) 和 [src/frontend/main.ts](src/frontend/main.ts)。
+
+如果你想单独改页面样式或交互，优先修改这些文件；Bun 服务会在 `/` 路径直接返回这个页面。
 
 ## 兼容性说明
 

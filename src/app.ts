@@ -45,8 +45,11 @@ import {
 } from './handlers/httpbin'
 import { buildRequestContext, InvalidBodyError } from './http/request-context'
 import { errorResponse, redirectResponse } from './http/response'
+import { homePage } from './frontend'
 
 type FetchHandler = NonNullable<Bun.Serve.Options<undefined>['fetch']>
+
+type ServerOptionsOverride = Pick<Bun.Serve.Options<undefined>, 'hostname' | 'port'>
 
 const routeKeys = new Set([
   '/',
@@ -85,6 +88,20 @@ const routeKeys = new Set([
 ])
 
 const echoMethods = new Set(['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'TRACE'])
+
+export function createServerOptions(
+  overrides: Partial<ServerOptionsOverride> = {}
+): Bun.Serve.Options<undefined> {
+  return {
+    fetch: createFetchHandler(),
+    hostname: Bun.env.HOST ?? '127.0.0.1',
+    port: Number(Bun.env.PORT ?? 3000),
+    routes: {
+      '/': homePage
+    },
+    ...overrides
+  }
+}
 
 export function createFetchHandler(): FetchHandler {
   return async (request, server) => {

@@ -19,5 +19,9 @@
     "oxlint": "^1.59.0",
     "typescript": "^5.9.3"
   },
-  "packageManager": "pnpm@10.33.0"
+  "packageManager": "pnpm@10.33.0",
+  "dependencies": {
+    "element-plus": "^2.13.7",
+    "vue": "^3.5.32"
+  }
 }
