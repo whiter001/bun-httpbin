@@ -6,13 +6,19 @@
   --surface-strong: #ffffff;
   --border: rgba(32, 41, 58, 0.12);
   --text: #122033;
-  --text-soft: #5d697c;
+  --text-soft: #4a5568;
   --accent: #0f766e;
   --accent-strong: #0b5e57;
   --accent-soft: rgba(15, 118, 110, 0.12);
   --warning: #d97706;
   --danger: #b91c1c;
   --shadow: 0 24px 80px rgba(25, 36, 53, 0.14);
+  --radius-sm: 18px;
+  --radius-md: 24px;
+  --radius-lg: 28px;
+  --font-sans: "Avenir Next", "Gill Sans", "Trebuchet MS", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-serif: "Georgia", "Times New Roman", serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 * {
@@ -28,7 +34,7 @@ body,
 body {
   margin: 0;
   color: var(--text);
-  font-family: "Avenir Next", "Gill Sans", "Trebuchet MS", sans-serif;
+  font-family: var(--font-sans);
   background:
     radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 28%),
     radial-gradient(circle at 90% 10%, rgba(217, 119, 6, 0.16), transparent 22%),
@@ -44,6 +50,7 @@ body::after {
   border-radius: 999px;
   pointer-events: none;
   filter: blur(18px);
+  will-change: transform;
 }
 
 body::before {
@@ -92,7 +99,7 @@ button {
 
 .boot-splash h1 {
   margin: 0;
-  font-family: "Georgia", "Times New Roman", serif;
+  font-family: var(--font-serif);
   font-size: clamp(2.5rem, 5vw, 5rem);
   letter-spacing: -0.04em;
 }
@@ -143,7 +150,7 @@ button {
 
 .hero h1 {
   margin: 0;
-  font-family: "Georgia", "Times New Roman", serif;
+  font-family: var(--font-serif);
   font-size: clamp(2.5rem, 4vw, 4.6rem);
   line-height: 0.95;
   letter-spacing: -0.06em;
@@ -190,7 +197,7 @@ button {
   grid-column: span 3;
   min-height: 7.5rem;
   border: 1px solid var(--border);
-  border-radius: 24px;
+  border-radius: var(--radius-md);
   background: var(--surface);
   backdrop-filter: blur(18px);
   box-shadow: var(--shadow);
@@ -210,7 +217,7 @@ button {
 }
 
 .metric-value {
-  font-family: "Georgia", "Times New Roman", serif;
+  font-family: var(--font-serif);
   font-size: 2.1rem;
   letter-spacing: -0.05em;
 }
@@ -229,7 +236,7 @@ button {
 
 .panel {
   border: 1px solid var(--border);
-  border-radius: 28px;
+  border-radius: var(--radius-lg);
   background: var(--surface);
   backdrop-filter: blur(18px);
   box-shadow: var(--shadow);
@@ -271,7 +278,7 @@ button {
   gap: 0.75rem;
   padding: 0.95rem;
   border: 1px solid rgba(15, 118, 110, 0.12);
-  border-radius: 22px;
+  border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.45);
 }
 
@@ -304,7 +311,7 @@ button {
 .endpoint-button {
   width: 100%;
   justify-content: flex-start;
-  border-radius: 18px;
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(15, 118, 110, 0.14);
   background: rgba(255, 255, 255, 0.72);
   color: var(--text);
@@ -332,8 +339,8 @@ button {
 
 .endpoint-button:focus-visible,
 .example-tile:focus-visible {
-  outline: 2px solid rgba(15, 118, 110, 0.45);
-  outline-offset: 2px;
+  outline: 3px solid rgba(15, 118, 110, 0.5);
+  outline-offset: 3px;
 }
 
 .endpoint-method {
@@ -378,7 +385,7 @@ button {
 .response-card,
 .examples-card {
   border: 1px solid var(--border);
-  border-radius: 24px;
+  border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.7);
 }
 
@@ -431,7 +438,7 @@ button {
   justify-content: space-between;
   padding: 0.8rem 0.95rem;
   border: 1px solid rgba(15, 118, 110, 0.14);
-  border-radius: 18px;
+  border-radius: var(--radius-sm);
   background: rgba(15, 118, 110, 0.06);
 }
 
@@ -495,7 +502,7 @@ button {
 }
 
 .response-status-code {
-  font-family: "Georgia", "Times New Roman", serif;
+  font-family: var(--font-serif);
   font-size: 2rem;
   letter-spacing: -0.04em;
 }
@@ -536,10 +543,10 @@ button {
   min-height: 14rem;
   padding: 1rem;
   margin: 0;
-  border-radius: 20px;
+  border-radius: var(--radius-sm);
   background: #0f172a;
   color: #f8fafc;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 0.88rem;
   line-height: 1.7;
   white-space: pre-wrap;
@@ -568,7 +575,7 @@ button {
   display: none;
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 1200px) {
   .hero-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -577,9 +584,7 @@ button {
     grid-column: span 1;
   }
 
-  .main-grid,
-  .composer-grid,
-  .response-grid {
+  .main-grid {
     grid-template-columns: 1fr;
   }
 
@@ -587,13 +592,20 @@ button {
     flex-direction: column;
     align-items: stretch;
   }
+}
+
+@media (max-width: 900px) {
+  .composer-grid,
+  .response-grid {
+    grid-template-columns: 1fr;
+  }
 
   .composer-card {
     grid-column: 1 / -1;
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 600px) {
   .app-shell {
     padding: 0.85rem;
   }
